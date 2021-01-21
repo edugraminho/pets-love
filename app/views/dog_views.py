@@ -17,6 +17,7 @@ dogs_schema = DogSchema(many=True)
 @bp_dogs.route('/', methods=['POST'])
 @jwt_required
 def create():
+    owner_id = get_jwt_identity()
     data = request.get_json()
     current_owner = get_jwt_identity()
 
@@ -26,7 +27,7 @@ def create():
     dog = Dog(
         name=data['name'],
         details=data['details'],
-        owner_id=data['owner_id'],
+        owner_id=owner_id,
         breed_id=data['breed_id'],
         gender=data['gender'])
 
@@ -39,6 +40,7 @@ def create():
 
 
 @ bp_dogs.route('/', methods=['GET'])
+@jwt_required
 def list_all():
     dogs = Dog.query.all()
 
@@ -83,7 +85,7 @@ def delete(dog_id: int):
     if not dog:
         return build_api_response(HTTPStatus.UNAUTHORIZED)
 
-    Dog.query.filter_by(id=dog_id).delete()
+    dog.delete()
     db.session.commit()
 
     return build_api_response(HTTPStatus.OK)

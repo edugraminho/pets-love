@@ -11,6 +11,8 @@ from app.views.dog_views import bp_dogs
 from app.views.home import bp_home
 from app.views.breed_views import bp_breed
 from app.views.authorization_view import bp_authorization
+from app.views.message_view import bp_message
+from app.views.conversation_view import bp_conversation
 from app.views.like_views import bp_like
 
 configs = {
@@ -41,6 +43,8 @@ def create_app(config='production'):
     app.register_blueprint(bp_breed)
 
     app.register_blueprint(bp_authorization)
+    app.register_blueprint(bp_message)
+    app.register_blueprint(bp_conversation)
 
     app.register_blueprint(bp_like)
     app.register_blueprint(bp_photo)
